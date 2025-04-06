@@ -3,7 +3,7 @@ import { Shopify } from '@shopify/shopify-api';
 // Shopify API credentials
 const API_KEY = '5cd9829ea6dc241bb8d3eefdcbad37d6';
 const API_SECRET = 'c127f67eefa1b57e66c53e2329f1edb6';
-const REDIRECT_URI = 'https://yourdomain.com/api/auth/shopify/callback';
+const REDIRECT_URI = 'http://213.130.147.62:3000/api/auth/shopify/callback';
 
 export async function GET(req) {
   const { searchParams } = new URL(req.url);
