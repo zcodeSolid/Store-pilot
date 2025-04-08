@@ -25,14 +25,14 @@ export default async function handler(req, res) {
   }
 
   try {
-    const tokenResponse = await axios.post(`https://${shop}/admin/oauth/access_token`, {
-      client_id: "5cd9829ea6dc241bb8d3eefdcbad37d6",
-      client_secret: secret,
-      code,
-    });
+    // const tokenResponse = await axios.post(`https://${shop}/admin/oauth/access_token`, {
+    //   client_id: "5cd9829ea6dc241bb8d3eefdcbad37d6",
+    //   client_secret: secret,
+    //   code,
+    // });
 
-    const accessToken = tokenResponse.data.access_token;
-    
+    // const accessToken = tokenResponse.data.access_token;
+
     res.setHeader('Content-Type', 'text/html');
 return res.status(200).send(`<!DOCTYPE html>
 <html lang="en">
