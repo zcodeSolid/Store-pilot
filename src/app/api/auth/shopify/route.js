@@ -1,15 +1,12 @@
-export default async function handler(req, res) {
-  // Check if the request method is GET
-  if (req.method !== 'GET') {
-    return res.status(405).json({ error: 'Method Not Allowed. Please use GET.' });
-  }
+import { NextResponse } from 'next/server';
 
-  // Extract the shop parameter from the query
-  const { shop } = req.query;
+export async function GET(req) {
+  const { searchParams } = new URL(req.url);
+  const shop = searchParams.get('shop');
 
-  // If the shop parameter is not provided, return a 400 error
+  // If no shop is provided in the query, return an error
   if (!shop) {
-    return res.status(400).json({ error: 'No shop provided' });
+    return NextResponse.json({ error: 'No shop provided' }, { status: 400 });
   }
 
   // Shopify OAuth details
@@ -21,5 +18,5 @@ export default async function handler(req, res) {
   const installUrl = `https://${shop}/admin/oauth/authorize?client_id=${apiKey}&scope=${scopes}&redirect_uri=${redirectUri}`;
 
   // Redirect the user to the Shopify OAuth authorization page
-  res.redirect(installUrl);
+  return NextResponse.redirect(installUrl);
 }

@@ -1,12 +1,24 @@
 import crypto from 'crypto';
 import axios from 'axios';
+import { NextResponse } from 'next/server';
 
-export default async function handler(req, res) {
-  const { shop, code, hmac, ...rest } = req.query;
+export async function GET(req) {
+  const { searchParams } = new URL(req.url);
+  const shop = searchParams.get('shop');
+  const code = searchParams.get('code');
+  const hmac = searchParams.get('hmac');
+  const rest = {};
+
+  // Extract any other query parameters for verification
+  searchParams.forEach((value, key) => {
+    if (key !== 'shop' && key !== 'code' && key !== 'hmac') {
+      rest[key] = value;
+    }
+  });
 
   if (!shop || !code || !hmac) {
     console.error('Missing parameters:', { shop, code, hmac });
-    return res.status(400).json({ error: 'Invalid request. Missing parameters' });
+    return NextResponse.json({ error: 'Invalid request. Missing parameters' }, { status: 400 });
   }
 
   // ✅ Verify HMAC
@@ -26,7 +38,7 @@ export default async function handler(req, res) {
 
   if (hash !== hmac) {
     console.error('Invalid HMAC signature');
-    return res.status(400).json({ error: 'Invalid HMAC signature' });
+    return NextResponse.json({ error: 'Invalid HMAC signature' }, { status: 400 });
   }
 
   try {
@@ -43,14 +55,13 @@ export default async function handler(req, res) {
     const accessToken = tokenResponse.data.access_token;
     if (!accessToken) {
       console.error('No access token returned');
-      return res.status(400).json({ error: 'Failed to retrieve access token' });
+      return NextResponse.json({ error: 'Failed to retrieve access token' }, { status: 400 });
     }
 
     console.log('Access token obtained:', accessToken);
 
     // Send HTML response
-    res.setHeader('Content-Type', 'text/html');
-    return res.status(200).send(`
+    const htmlResponse = `
       <!DOCTYPE html>
       <html lang="en">
       <head>
@@ -79,10 +90,12 @@ export default async function handler(req, res) {
 
       </body>
       </html>
-    `);
+    `;
+
+    return NextResponse.text(htmlResponse, { status: 200 });
 
   } catch (err) {
     console.error('Error occurred while obtaining access token:', err);
-    return res.status(400).json({ error: 'Failed to get access token' });
+    return NextResponse.json({ error: 'Failed to get access token' }, { status: 400 });
   }
 }
