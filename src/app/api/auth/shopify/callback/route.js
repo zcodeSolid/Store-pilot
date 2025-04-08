@@ -45,7 +45,41 @@ export default async function handler(req, res) {
     //   })
     // );
 
-    return "<>html>Success! You can close this tab.</html>";
+    return `<html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopify Test Interface</title>
+    <link href="https://cdn.shopify.com/s/assets/external/app.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+
+    <div class="ShopifyApp">
+        <div class="ShopifyApp__Header">
+            <h1>Shopify App Test Interface</h1>
+        </div>
+
+        <div class="ShopifyApp__Content">
+            <p>Welcome to your Shopify App Interface!</p>
+
+            <!-- Display the connected shop name -->
+            <p>Your shop: <strong>whatches-theme.myshopify.com</strong></p>
+
+            <!-- Test Message -->
+            <p>This is a test view to see how your app interface looks.</p>
+        </div>
+
+        <footer>
+            <p>Powered by Your App - Test</p>
+        </footer>
+    </div>
+
+    <script>
+        // Add any custom JS for the test interface if needed
+    </script>
+
+
+
+</body></html>`;
 
   } catch (err) {
     return res.status(400).json({ error: 'Failed to get access token' });
