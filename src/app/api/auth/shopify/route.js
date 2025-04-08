@@ -7,7 +7,7 @@ export default async function handler(req, res) {
 
   const apiKey = "5cd9829ea6dc241bb8d3eefdcbad37d6";
   const scopes = "read_products,write_products";
-  const redirectUri = "http://213.130.147.62:3000/api/auth/shopify/callback";
+  const redirectUri = "https://storepilot.zcode.site/api/auth/shopify/callback";
 
   const installUrl = `https://${shop}/admin/oauth/authorize?client_id=${apiKey}&scope=${scopes}&redirect_uri=${redirectUri}`;
 
