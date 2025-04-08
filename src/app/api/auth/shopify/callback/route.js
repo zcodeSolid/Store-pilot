@@ -1,7 +1,5 @@
 import crypto from 'crypto';
 import axios from 'axios';
-import { query as q } from 'faunadb';
-import { serverClient } from '@/lib/fauna'; // Or your DB logic
 
 export default async function handler(req, res) {
   const { shop, code, hmac, ...rest } = req.query;
@@ -34,17 +32,7 @@ export default async function handler(req, res) {
     });
 
     const accessToken = tokenResponse.data.access_token;
-
-    // ✅ Store to your DB (example with FaunaDB or whatever you're using)
-    // await serverClient.query(
-    //   q.Create(q.Collection('shops'), {
-    //     data: {
-    //       shop,
-    //       accessToken,
-    //     },
-    //   })
-    // );
-
+    
     res.setHeader('Content-Type', 'text/html');
 return res.status(200).send(`<!DOCTYPE html>
 <html lang="en">
