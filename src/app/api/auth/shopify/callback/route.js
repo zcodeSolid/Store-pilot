@@ -1,35 +1,53 @@
-import { Shopify } from '@shopify/shopify-api';
+import crypto from 'crypto';
+import axios from 'axios';
+import { query as q } from 'faunadb';
+import { serverClient } from '@/lib/fauna'; // Or your DB logic
 
-// Shopify API credentials
-const API_KEY = '5cd9829ea6dc241bb8d3eefdcbad37d6';
-const API_SECRET = 'c127f67eefa1b57e66c53e2329f1edb6';
-const REDIRECT_URI = 'http://213.130.147.62:3000/api/auth/shopify/callback';
+export default async function handler(req, res) {
+  const { shop, code, hmac, ...rest } = req.query;
 
-export async function GET(req) {
-  const { searchParams } = new URL(req.url);
-  const { shop, code, hmac, timestamp } = Object.fromEntries(searchParams.entries());
-
-  if (!shop || !code) {
-    return new Response('Invalid request.', { status: 400 });
+  if (!shop || !code || !hmac) {
+    return res.status(400).json({ error: 'Invalid request' });
   }
 
-  // Check the request is coming from Shopify
-  const valid = Shopify.Auth.validateHMAC({ hmac, timestamp });
-  if (!valid) {
-    return new Response('Request was not valid.', { status: 400 });
+  // ✅ Verify HMAC
+  const message = Object.keys(rest)
+    .sort()
+    .map(key => `${key}=${rest[key]}`)
+    .join('&');
+
+  const secret = "c127f67eefa1b57e66c53e2329f1edb6";
+  const hash = crypto
+    .createHmac('sha256', secret)
+    .update(message)
+    .digest('hex');
+
+  if (hash !== hmac) {
+    return res.status(400).json({ error: 'Invalid HMAC signature' });
   }
 
-  // Exchange the code for the access token
   try {
-    const accessToken = await Shopify.Auth.getAccessToken(code);
-    // Store the access token securely for future API calls
-    // You can store the token in a database along with the store's shop domain
-    // Example: save access token to database for future use
-    // db.saveAccessToken(shop, accessToken);
-    
-    return new Response('App successfully installed!');
-  } catch (error) {
-    console.error('Error during access token exchange:', error);
-    return new Response('Error during installation process.', { status: 500 });
+    const tokenResponse = await axios.post(`https://${shop}/admin/oauth/access_token`, {
+      client_id: "5cd9829ea6dc241bb8d3eefdcbad37d6",
+      client_secret: secret,
+      code,
+    });
+
+    const accessToken = tokenResponse.data.access_token;
+
+    // ✅ Store to your DB (example with FaunaDB or whatever you're using)
+    // await serverClient.query(
+    //   q.Create(q.Collection('shops'), {
+    //     data: {
+    //       shop,
+    //       accessToken,
+    //     },
+    //   })
+    // );
+
+    return "<>html>Success! You can close this tab.</html>";
+
+  } catch (err) {
+    return res.status(400).json({ error: 'Failed to get access token' });
   }
 }
