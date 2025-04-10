@@ -36,10 +36,10 @@ export async function GET(req) {
   console.log('Generated HMAC hash:', hash);
   console.log('Provided HMAC:', hmac);
 
-  // if (hash !== hmac) {
-  //   console.error('Invalid HMAC signature');
-  //   return NextResponse.json({ error: 'Invalid HMAC signature' }, { status: 400 });
-  // }
+  if (hash !== hmac) {
+    console.error('Invalid HMAC signature');
+    console.log({ error: 'Invalid HMAC signature' }, { status: 400 });
+  }
 
   try {
     // Request access token from Shopify
@@ -55,7 +55,8 @@ export async function GET(req) {
     const accessToken = tokenResponse.data.access_token;
     if (!accessToken) {
       console.error('No access token returned');
-      return NextResponse.json({ error: 'Failed to retrieve access token' }, { status: 400 });
+      // NextResponse.json({ error: 'Failed to retrieve access token' }, { status: 400 })
+      console.log({ error: 'Failed to retrieve access token' }, { status: 400 });
     }
 
     console.log('Access token obtained:', accessToken);
@@ -96,6 +97,6 @@ export async function GET(req) {
 
   } catch (err) {
     console.error('Error occurred while obtaining access token:', err);
-    return NextResponse.json({ error: 'Failed to get access token' }, { status: 400 });
+    return NextResponse.json({ error: 'Failed to get access token 54535' }, { status: 400 });
   }
 }
