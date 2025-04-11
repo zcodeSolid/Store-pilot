@@ -93,7 +93,12 @@ export async function GET(req) {
       </html>
     `;
 
-    return NextResponse.text(htmlResponse, { status: 200 });
+    return new Response(htmlResponse, {
+      status: 200,
+      headers: {
+        'Content-Type': 'text/html',
+      },
+    });
 
   } catch (err) {
     console.error('Error occurred while obtaining access token:', err);
