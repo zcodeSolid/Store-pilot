@@ -18,14 +18,11 @@ const DashboardHeader = () => {
   return (
     <header>
       <h1>Dashboard</h1>
-      <nav>
-        <ul>
-          <li><a href="/dashboard">Home</a></li>
-          <li><a href="/orders">Orders</a></li>
-          <li><a href="/products">Products</a></li>
-          <li><a href="/settings">Settings</a></li>
-        </ul>
-      </nav>
+      <ui-nav-menu>
+  <a href="/" rel="home">Home</a>
+  <a href="/templates">Templates</a>
+  <a href="/settings">Settings</a>
+</ui-nav-menu>
     </header>
   );
 };
