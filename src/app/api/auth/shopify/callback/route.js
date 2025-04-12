@@ -69,6 +69,8 @@ export async function GET(req) {
       sameSite: 'lax',
     });
 
+    return response;
+
   } catch (err) {
     console.error('Error occurred while obtaining access token:', err);
     return NextResponse.json({ error: 'Failed to get access token 54535' }, { status: 400 });
