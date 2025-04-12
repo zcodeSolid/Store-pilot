@@ -61,43 +61,12 @@ export async function GET(req) {
 
     console.log('Access token obtained:', accessToken);
 
-    // Send HTML response
-    const htmlResponse = `
-      <!DOCTYPE html>
-      <html lang="en">
-      <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Shopify Test Interface</title>
-        <link href="https://cdn.shopify.com/s/assets/external/app.css" rel="stylesheet" type="text/css" />
-      </head>
-      <body>
-
-        <div class="ShopifyApp">
-          <div class="ShopifyApp__Header">
-            <h1>Shopify App Test Interface</h1>
-          </div>
-
-          <div class="ShopifyApp__Content">
-            <p>Welcome to your Shopify App Interface!</p>
-            <p>Your shop: <strong>${shop}</strong></p>
-            <p>This is a test view to see how your app interface looks.</p>
-          </div>
-
-          <footer>
-            <p>Powered by Your App - Test</p>
-          </footer>
-        </div>
-
-      </body>
-      </html>
-    `;
-
-    return new Response(htmlResponse, {
-      status: 200,
-      headers: {
-        'Content-Type': 'text/html',
-      },
+    const response = NextResponse.redirect(new URL('/dashboard', req.url));
+    response.cookies.set('token', 'your-secret-token', {
+      httpOnly: true,
+      path: '/',
+      secure: true,
+      sameSite: 'lax',
     });
 
   } catch (err) {
