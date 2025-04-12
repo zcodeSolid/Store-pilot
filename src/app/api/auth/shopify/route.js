@@ -12,7 +12,7 @@ export async function GET(req) {
   // Shopify OAuth details
   const apiKey = "5cd9829ea6dc241bb8d3eefdcbad37d6";
   const scopes = "read_products,write_products";
-  const redirectUri = `${process.env.NEXT_PUBLIC_APP_URL}/api/auth/shopify/callback`;
+  const redirectUri = `${process.env.NEXT_PUBLIC_APP_URL}api/auth/shopify/callback`;
 
   // Construct the Shopify OAuth URL
   const installUrl = `https://${shop}/admin/oauth/authorize?client_id=${apiKey}&scope=${scopes}&redirect_uri=${redirectUri}`;
