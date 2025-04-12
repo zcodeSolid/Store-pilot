@@ -9,10 +9,13 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@shopify/app-bridge": "^3.7.10",
+    "@shopify/app-bridge-react": "^4.1.8",
     "@shopify/shopify-api": "^11.12.0",
+    "font-awesome": "^4.7.0",
     "next": "15.2.4",
     "next-auth": "^4.24.11",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
   }
 }
