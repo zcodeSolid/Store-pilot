@@ -4,9 +4,9 @@ import { redirect } from 'next/navigation';
 export default function DashboardPage() {
   const token = cookies().get('token')?.value;
 
-  if (!token) {
-    redirect(process.env.NEXT_PUBLIC_APP_URL);
-  }
+  // if (!token) {
+  //   redirect(process.env.NEXT_PUBLIC_APP_URL);
+  // }
 
   return (
     <div>
