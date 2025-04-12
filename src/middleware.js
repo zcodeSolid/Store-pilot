@@ -10,7 +10,7 @@ export function middleware(request) {
 
   // If trying to access dashboard and no token → redirect to home/login
   if (isDashboard && !token) {
-    return NextResponse.redirect(new URL('/', request.url));
+    return NextResponse.redirect(new URL(process.env.NEXT_PUBLIC_APP_URL, request.url));
   }
 
   return NextResponse.next();

@@ -61,10 +61,10 @@ export async function GET(req) {
 
     console.log('Access token obtained:', accessToken);
 
-    const response = NextResponse.redirect(new URL('/dashboard', req.url));
+    const response = NextResponse.redirect(new URL(`${process.env.NEXT_PUBLIC_APP_URL}/dashboard`, req.url));
     response.cookies.set('token', 'your-secret-token', {
       httpOnly: true,
-      path: '/',
+      path: process.env.NEXT_PUBLIC_APP_URL,
       secure: true,
       sameSite: 'lax',
     });
